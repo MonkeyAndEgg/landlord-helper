@@ -53,6 +53,15 @@ export default function Balance() {
     onClose();
   };
 
+  const onDeleteRecord = (record: Record) => {
+    setData(prev => {
+      const targetIndex = prev.indexOf(record);
+      const newData = [...prev];
+      newData.splice(targetIndex, 1);
+      return newData;
+    });
+  };
+
   return (
     <Flex w="100%">
       <Tabs w="100%" variant='enclosed'>
@@ -66,7 +75,7 @@ export default function Balance() {
           { 
             years.map(year => (
               <TabPanel>
-                <BalanceTable data={data} />
+                <BalanceTable data={data} onDeleteRecord={onDeleteRecord} />
               </TabPanel>
             ))
           }
