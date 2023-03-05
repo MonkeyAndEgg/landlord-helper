@@ -13,7 +13,6 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
   return (
     <TableContainer>
       <Table variant='striped' colorScheme='teal'>
-        {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
         <Thead>
           <Tr>
             { 
