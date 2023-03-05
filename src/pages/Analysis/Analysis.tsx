@@ -1,11 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 
-function App() {
+export default function Analysis() {
   return (
     <Flex>
-      Root page
+      Analysis page
     </Flex>
   );
 }
-
-export default App;
