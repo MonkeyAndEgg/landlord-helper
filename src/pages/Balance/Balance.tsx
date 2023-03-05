@@ -7,9 +7,9 @@ import { Record } from "../../models/record";
 import BalanceModal from "../../components/BalanceModal/BalanceModal";
 
 const INIT_DATA: Record[] = [
-  { title: 'bc hydro', category: 'utility', date: new Date(), amount: '1800', type: TYPE.COST },
-  { title: 'mortgage payment', category: 'mortgage', date: new Date(), amount: '2800', type: TYPE.COST },
-  { title: 'rent', category: 'rent', date: new Date(), amount: '6000', type: TYPE.INCOME }
+  { title: 'bc hydro', category: 'utility', date: '2023-01-01', amount: '1800', type: TYPE.COST },
+  { title: 'mortgage payment', category: 'mortgage', date: '2023-01-01', amount: '2800', type: TYPE.COST },
+  { title: 'rent', category: 'rent', date: '2023-01-01', amount: '6000', type: TYPE.INCOME }
 ];
 
 export default function Balance() {
@@ -20,9 +20,9 @@ export default function Balance() {
   useEffect(() => {
     const updatedYears: number[] = [];
     data.forEach((record: Record) => {
-      const currentYear = record.date.getFullYear();
+      const currentYear = new Date(record.date).getFullYear();
       if (!updatedYears.includes(currentYear)) {
-        updatedYears.push(record.date.getFullYear());
+        updatedYears.push(currentYear);
       }
     });
     setYears(updatedYears);

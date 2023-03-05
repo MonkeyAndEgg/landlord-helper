@@ -26,7 +26,7 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
               <Tr>
                 <Td>{item.title}</Td>
                 <Td>{item.category}</Td>
-                <Td>{item.date.toDateString()}</Td>
+                <Td>{item.date}</Td>
                 <Td>{item.amount}</Td>
                 <Td>
                   <IconButton

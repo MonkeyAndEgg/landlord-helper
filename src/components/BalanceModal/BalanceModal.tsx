@@ -2,8 +2,6 @@ import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButt
 import { useState } from "react";
 import { TYPE } from "../../constants/record-type";
 import { Record } from "../../models/record";
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
 
 interface BalanceModalProps {
   isOpen: boolean;
@@ -12,7 +10,7 @@ interface BalanceModalProps {
 }
 
 export default function BalanceModal({ isOpen, onClose, onAddNewRecord }: BalanceModalProps) {
-  const [ date, setDate ] = useState(new Date());
+  const [ date, setDate ] = useState('');
   const [ title, setTitle ] = useState('');
   const [ category, setCategory ] = useState('');
   const [ amount, setAmount ] = useState('');
@@ -46,7 +44,13 @@ export default function BalanceModal({ isOpen, onClose, onAddNewRecord }: Balanc
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            <DatePicker selected={date} onChange={(date: any) => setDate(date)} />
+            <FormLabel>Date</FormLabel>
+            <Input
+              placeholder="Select Date"
+              size="md"
+              type="date"
+              onChange={(event) => setDate(event.target.value)}
+            />
           </FormControl>
         </ModalBody>
 
