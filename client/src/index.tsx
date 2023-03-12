@@ -9,6 +9,8 @@ import { ChakraProvider, Flex, HStack } from '@chakra-ui/react';
 import SideBar from './components/SideBar/SideBar';
 import Analysis from './pages/Analysis/Analysis';
 import Routine from './pages/Routine/Routine';
+import { ApolloProvider } from '@apollo/client';
+import client from './apolloClient';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -34,16 +36,18 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-  <React.StrictMode>
-    <ChakraProvider>
-      <HStack spacing={0} w='100vw' h='100vh'>
-        <SideBar />
-        <Flex h='100%' w='100%' py={15} px={30}>
-          <RouterProvider router={router} />
-        </Flex>
-      </HStack>
-    </ChakraProvider>
-  </React.StrictMode>
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <ChakraProvider>
+        <HStack spacing={0} w='100vw' h='100vh'>
+          <SideBar />
+          <Flex h='100%' w='100%' py={15} px={30}>
+            <RouterProvider router={router} />
+          </Flex>
+        </HStack>
+      </ChakraProvider>
+    </React.StrictMode>
+  </ApolloProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
