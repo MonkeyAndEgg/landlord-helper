@@ -10,6 +10,7 @@ export const typeDefs = `
     username: String
     email: String
     password: String
+    confirmPassword: String
   }
 
   input LoginInput {

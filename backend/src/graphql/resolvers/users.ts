@@ -10,9 +10,9 @@ export const userReslovers = {
   Mutation: {
     async registerUser(_, { registerInput: { username, email, password } }) {
       // check if old user exists
-      const currentUser = await User.findOne({ email, username });
+      const currentUser = await User.findOne({ email });
       if (currentUser) {
-        throw new GraphQLError(`The user with email ${email} or ${username} already exists.`)
+        throw new GraphQLError(`The user with email ${email} already exists.`)
       }
 
       // hash password
