@@ -11,6 +11,9 @@ import Analysis from './pages/Analysis/Analysis';
 import Routine from './pages/Routine/Routine';
 import { ApolloProvider } from '@apollo/client';
 import client from './apolloClient';
+import { AuthProvider } from './context/authContext';
+import Login from './pages/Login/Login';
+import Signup from './pages/Signup/Signup';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +23,14 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/signup',
+    element: <Signup />
   },
   {
     path: '/balance',
@@ -36,18 +47,20 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-  <ApolloProvider client={client}>
-    <React.StrictMode>
-      <ChakraProvider>
-        <HStack spacing={0} w='100vw' h='100vh'>
-          <SideBar />
-          <Flex h='100%' w='100%' py={15} px={30}>
-            <RouterProvider router={router} />
-          </Flex>
-        </HStack>
-      </ChakraProvider>
-    </React.StrictMode>
-  </ApolloProvider>
+  <AuthProvider>
+    <ApolloProvider client={client}>
+      <React.StrictMode>
+        <ChakraProvider>
+          <HStack spacing={0} w='100vw' h='100vh'>
+            <SideBar />
+            <Flex h='100%' w='100%' py={15} px={30}>
+              <RouterProvider router={router} />
+            </Flex>
+          </HStack>
+        </ChakraProvider>
+      </React.StrictMode>
+    </ApolloProvider>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
