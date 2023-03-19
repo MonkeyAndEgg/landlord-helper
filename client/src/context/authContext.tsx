@@ -60,7 +60,7 @@ function AuthProvider(props: any) {
 
   const logout = () => {
     localStorage.removeItem('token');
-    dispatch({ type: 'LOGOUT' })
+    dispatch({ type: 'LOGOUT' });
   };
 
   return (

@@ -4,18 +4,18 @@ import { AuthContext } from "../../../context/authContext";
 import User from "../../User/User";
 
 export default function SideBarContent() {
-  const authContext = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <Box>
-      <User user={authContext.user} />
+      <User user={user} />
 
       <VStack
         mt={20}
         spacing={10}
         align='stretch'
       >
-        { authContext.user ? (
+        { user ? (
           <>
             <Link href='/balance'>
               <Flex h='40px' cursor='pointer' justifyContent='center'>
@@ -36,7 +36,7 @@ export default function SideBarContent() {
             </Link>
 
             <Link href='/login'>
-              <Flex h='40px' cursor='pointer' justifyContent='center'>
+              <Flex h='40px' cursor='pointer' justifyContent='center' onClick={logout}>
                 Logout
               </Flex>
             </Link>
