@@ -20,7 +20,7 @@ export default function Balance() {
   useEffect(() => {
     const updatedYears: number[] = [];
     data.forEach((record: Record) => {
-      const currentYear = new Date(record.date).getFullYear();
+      const currentYear = new Date(record.date).getUTCFullYear();
       if (!updatedYears.includes(currentYear)) {
         updatedYears.push(currentYear);
       }
