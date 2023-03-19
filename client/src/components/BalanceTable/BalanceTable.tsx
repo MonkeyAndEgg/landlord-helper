@@ -16,14 +16,14 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
         <Thead>
           <Tr>
             { 
-              labels && labels.map(label => <Th>{label}</Th>)
+              labels && labels.map(label => <Th key={label}>{label}</Th>)
             }
           </Tr>
         </Thead>
         <Tbody>
           {
             data && data.map(item =>
-              <Tr>
+              <Tr key={item.title}>
                 <Td>{item.title}</Td>
                 <Td>{item.category}</Td>
                 <Td>{item.date}</Td>

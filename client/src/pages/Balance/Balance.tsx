@@ -53,14 +53,14 @@ export default function Balance() {
       <Tabs w="100%" variant='enclosed'>
         <TabList>
           { 
-            years.map(year => (<Tab>{year}</Tab>))
+            years.map(year => (<Tab key={year}>{year}</Tab>))
           }
         </TabList>
         
         <TabPanels>
           { 
             years.map(year => (
-              <TabPanel>
+              <TabPanel key={year}>
                 <BalanceTable data={data} onDeleteRecord={onDeleteRecord} />
               </TabPanel>
             ))
