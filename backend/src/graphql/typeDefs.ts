@@ -1,4 +1,4 @@
-export const typeDefs = `
+const userTypeDefs = `
   type User {
     username: String
     email: String
@@ -26,4 +26,37 @@ export const typeDefs = `
     registerUser(registerInput: RegisterInput): User
     loginUser(loginInput: LoginInput): User
   }
+`;
+
+const recordTypeDefs = `
+  type Record {
+    title: String
+    category: String
+    date: String
+    amount: String
+    type: String
+    userId: ID!
+  }
+
+  input AddRecordInput {
+    title: String
+    category: String
+    date: String
+    amount: String
+    type: String
+    userId: ID!
+  }
+
+  type Query {
+    records(userId: ID!): [Record]
+  }
+
+  type Mutation {
+    addRecord(addRecordInput: AddRecordInput): Record
+  }
+`;
+
+export const typeDefs = `
+  ${userTypeDefs}
+  ${recordTypeDefs}
 `;
