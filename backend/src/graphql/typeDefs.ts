@@ -35,15 +35,15 @@ const recordTypeDefs = `
     date: String
     amount: String
     type: String
-    userId: ID!
+    userId: ID
   }
 
   input AddRecordInput {
-    title: String
-    category: String
-    date: String
-    amount: String
-    type: String
+    title: String!
+    category: String!
+    date: String!
+    amount: String!
+    type: String!
     userId: ID!
   }
 
