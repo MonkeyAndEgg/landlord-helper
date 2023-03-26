@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, ObjectId, Types } from "mongoose";
 
 interface IRecord {
   title: string;
@@ -6,7 +6,7 @@ interface IRecord {
   date: string;
   amount: string;
   type: string;
-  userId: Schema.Types.UUID;
+  userId: ObjectId;
 }
 
 const recordSchema = new Schema<IRecord>({
@@ -15,7 +15,7 @@ const recordSchema = new Schema<IRecord>({
   date: { type: String },
   amount: { type: String },
   type: { type: String },
-  userId: { type: Schema.Types.UUID },
+  userId: { type: Types.ObjectId },
 });
 
 export const Record = model<IRecord>('Record', recordSchema);
