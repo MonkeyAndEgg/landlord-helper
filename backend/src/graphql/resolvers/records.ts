@@ -1,4 +1,5 @@
 import { Record } from "../../models/Record";
+import { GraphQLError } from "graphql";
 
 export const recordReslovers = {
   Query: {
@@ -26,10 +27,16 @@ export const recordReslovers = {
         type: res.type,
         userId: res.userId
       };
-    }
+    },
 
     // async updateRecord
 
-    // async removeRecord
+    async deleteRecord(_, { recordId }) {
+      const res = await Record.deleteOne({ _id: recordId });
+      if (res.deletedCount === 0) {
+        throw new GraphQLError(`Failed to delete the record.`)
+      }
+      return res;
+    }
   }
 };

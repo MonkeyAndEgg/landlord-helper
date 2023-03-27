@@ -53,6 +53,7 @@ const recordTypeDefs = `
 
   type Mutation {
     addRecord(addRecordInput: AddRecordInput): Record
+    deleteRecord(recordId: ID!): Record
   }
 `;
 
