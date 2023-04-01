@@ -20,7 +20,7 @@ const GET_RECORDS = gql`
   }
 `;
 
-const Add_RECORD = gql`
+const ADD_RECORD = gql`
   mutation Mutation($addRecordInput: AddRecordInput) {
     addRecord(addRecordInput: $addRecordInput) {
       amount
@@ -40,7 +40,7 @@ export default function Balance() {
     variables: { userId: authContext && authContext.user ? authContext.user['user_id'] : '' },
     pollInterval: 500,
   });
-  const [addRecord, { loading: adding }] = useMutation(Add_RECORD);
+  const [addRecord, { loading: adding }] = useMutation(ADD_RECORD);
 
   useEffect(() => {
     if (data) {
