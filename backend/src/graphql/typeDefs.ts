@@ -30,6 +30,7 @@ const userTypeDefs = `
 
 const recordTypeDefs = `
   type Record {
+    id: ID
     title: String
     category: String
     date: String
