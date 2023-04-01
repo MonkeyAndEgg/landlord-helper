@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 export const userReslovers = {
   Query: {
-    user: (_, { ID }) => User.findById(ID)
+    user: async (_, { ID }) => await User.findById(ID)
   },
   Mutation: {
     async registerUser(_, { registerInput: { username, email, password } }) {
