@@ -1,12 +1,12 @@
 import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select } from "@chakra-ui/react";
 import { useState } from "react";
 import { TYPE } from "../../constants/record-type";
-import { Record } from "../../models/record";
+import { RecordInput } from "../../models/record";
 
 interface BalanceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddNewRecord: (record: Record) => void;
+  onAddNewRecord: (record: RecordInput) => void;
 }
 
 export default function BalanceModal({ isOpen, onClose, onAddNewRecord }: BalanceModalProps) {
