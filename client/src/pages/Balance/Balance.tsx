@@ -2,7 +2,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Flex, IconButton, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from "@chakra-ui/react";
 import BalanceTable from "../../components/BalanceTable/BalanceTable";
 import { useContext, useEffect, useState } from "react";
-import { Record } from "../../models/record";
+import { Record, RecordInput } from "../../models/record";
 import BalanceModal from "../../components/BalanceModal/BalanceModal";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
@@ -11,6 +11,7 @@ import { AuthContext } from "../../context/authContext";
 const GET_RECORDS = gql`
   query Records($userId: ID!) {
     records(userId: $userId) {
+      id
       title
       category
       date
@@ -32,6 +33,18 @@ const ADD_RECORD = gql`
   }
 `;
 
+const DELETE_RECORD = gql`
+  mutation DeleteRecord($recordId: ID!) {
+    deleteRecord(recordId: $recordId) {
+      amount
+      category
+      date
+      title
+      type
+    }
+  }
+`;
+
 export default function Balance() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [ years, setYears ] = useState([] as number[]);
@@ -41,6 +54,7 @@ export default function Balance() {
     pollInterval: 500,
   });
   const [addRecord, { loading: adding }] = useMutation(ADD_RECORD);
+  const [deleteRecord, { loading: deleting }] = useMutation(DELETE_RECORD);
 
   useEffect(() => {
     if (data) {
@@ -55,16 +69,19 @@ export default function Balance() {
     }
   }, [data]);
 
-  const onAddNewRecord = (record: Record) => {
+  const onAddNewRecord = async (record: RecordInput) => {
     if (authContext && authContext.user) {
-      addRecord({ variables: { addRecordInput: { ...record, userId: authContext.user['user_id'] } } });
+      await addRecord({ variables: { addRecordInput: { ...record, userId: authContext.user['user_id'] } } });
       refetch({ userId: authContext.user['user_id'] });
     }
     onClose();
   };
 
-  const onDeleteRecord = (record: Record) => {
-    // TODO add delete
+  const onDeleteRecord = async (recordId: string) => {
+    if (authContext && authContext.user) {
+      await deleteRecord({ variables: { recordId } });
+      refetch({ userId: authContext.user['user_id'] });
+    }
   };
 
   return (
@@ -72,13 +89,13 @@ export default function Balance() {
       <Tabs w="100%" variant='enclosed'>
         <TabList>
           { 
-            years.map(year => (<Tab key={year}>{year}</Tab>))
+            years.map((year: number) => (<Tab key={year}>{year}</Tab>))
           }
         </TabList>
         
         <TabPanels>
           { 
-            years.map(year => (
+            years.map((year: number) => (
               <TabPanel key={year}>
                 <BalanceTable data={data.records} onDeleteRecord={onDeleteRecord} />
               </TabPanel>
