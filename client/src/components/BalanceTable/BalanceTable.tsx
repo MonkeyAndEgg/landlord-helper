@@ -4,7 +4,7 @@ import { Record } from "../../models/record";
 
 interface BalanceTableProps {
   data: Record[];
-  onDeleteRecord: (record: Record) => void;
+  onDeleteRecord: (recordId: string) => void;
 }
 
 export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps) {
@@ -23,7 +23,7 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
         <Tbody>
           {
             data && data.map(item =>
-              <Tr key={item.title}>
+              <Tr key={item.id}>
                 <Td>{item.title}</Td>
                 <Td>{item.category}</Td>
                 <Td>{item.date}</Td>
@@ -32,7 +32,7 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
                   <IconButton
                     aria-label='delete record'
                     icon={<DeleteIcon />}
-                    onClick={() => onDeleteRecord(item)}
+                    onClick={() => onDeleteRecord(item.id)}
                   />
                 </Td>
               </Tr>
