@@ -48,8 +48,13 @@ const recordTypeDefs = `
     userId: ID!
   }
 
+  input GetRecordsInput {
+    userId: ID!
+    year: String
+  }
+
   type Query {
-    records(userId: ID!): [Record]
+    records(getRecordsInput: GetRecordsInput): [Record]
   }
 
   type Mutation {

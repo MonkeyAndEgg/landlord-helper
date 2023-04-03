@@ -3,7 +3,10 @@ import { GraphQLError } from "graphql";
 
 export const recordReslovers = {
   Query: {
-    records: async (_, { userId }) => await Record.find({ userId })
+    records: async (_, { getRecordsInput: { userId, year } }) => await Record.find({ userId, date: {
+      $gte: `${year}-01-01`,
+      $lte: `${year}-12-31`
+    } }).sort('date')
   },
   Mutation: {
     async addRecord(_, { addRecordInput: { title, category, date, amount, type, userId } }) {
