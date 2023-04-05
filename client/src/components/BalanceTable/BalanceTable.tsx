@@ -11,7 +11,7 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
   const labels = ['Title', 'Category', 'Date', 'Amount', 'Action'];
 
   return (
-    <TableContainer>
+    <TableContainer w="100%">
       <Table variant='striped' colorScheme='teal'>
         <Thead>
           <Tr>
