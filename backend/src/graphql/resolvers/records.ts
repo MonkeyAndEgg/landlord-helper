@@ -3,10 +3,21 @@ import { GraphQLError } from "graphql";
 
 export const recordReslovers = {
   Query: {
-    records: async (_, { getRecordsInput: { userId, year } }) => await Record.find({ userId, date: {
-      $gte: `${year}-01-01`,
-      $lte: `${year}-12-31`
-    } }).sort('date')
+    records: async (_, { getRecordsInput: { userId, fromDate, toDate } }) => {
+      let queryDateOptions = {};
+      if (fromDate) {
+        queryDateOptions = {
+          $gte: fromDate
+        };
+      }
+      if (toDate) {
+        queryDateOptions = {
+          ...queryDateOptions,
+          $lte: toDate
+        };
+      }
+      return await Record.find({ userId, date: queryDateOptions}).sort('date');
+    }
   },
   Mutation: {
     async addRecord(_, { addRecordInput: { title, category, date, amount, type, userId } }) {

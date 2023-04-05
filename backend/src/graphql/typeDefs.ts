@@ -50,7 +50,8 @@ const recordTypeDefs = `
 
   input GetRecordsInput {
     userId: ID!
-    year: String
+    fromDate: String
+    toDate: String
   }
 
   type Query {
