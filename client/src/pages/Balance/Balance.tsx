@@ -1,16 +1,16 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Flex, IconButton, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from "@chakra-ui/react";
+import { Button, HStack, IconButton, Input, VStack, useDisclosure } from "@chakra-ui/react";
 import BalanceTable from "../../components/BalanceTable/BalanceTable";
-import { useContext, useEffect, useState } from "react";
-import { Record, RecordInput } from "../../models/record";
+import { useContext, useState } from "react";
+import { RecordInput } from "../../models/record";
 import BalanceModal from "../../components/BalanceModal/BalanceModal";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
 import { AuthContext } from "../../context/authContext";
 
 const GET_RECORDS = gql`
-  query Records($userId: ID!) {
-    records(userId: $userId) {
+  query Records($getRecordsInput: GetRecordsInput) {
+    records(getRecordsInput: $getRecordsInput) {
       id
       title
       category
@@ -47,32 +47,20 @@ const DELETE_RECORD = gql`
 
 export default function Balance() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [ years, setYears ] = useState([] as number[]);
+  const [ fromDate, setFromDate ] = useState(`${new Date().getUTCFullYear()-1}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
+  const [ toDate, setToDate ] = useState(`${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
   const authContext = useContext(AuthContext);
   const { loading, error, data, refetch } = useQuery(GET_RECORDS, {
-    variables: { userId: authContext && authContext.user ? authContext.user['user_id'] : '' },
+    variables: { getRecordsInput: { userId: authContext && authContext.user ? authContext.user['user_id'] : '', fromDate, toDate } },
     pollInterval: 500,
   });
   const [addRecord, { loading: adding }] = useMutation(ADD_RECORD);
   const [deleteRecord, { loading: deleting }] = useMutation(DELETE_RECORD);
 
-  useEffect(() => {
-    if (data) {
-      const updatedYears: number[] = [];
-      data.records.forEach((record: Record) => {
-        const currentYear = new Date(record.date).getUTCFullYear();
-        if (!updatedYears.includes(currentYear)) {
-          updatedYears.push(currentYear);
-        }
-      });
-      setYears(updatedYears);
-    }
-  }, [data]);
-
   const onAddNewRecord = async (record: RecordInput) => {
     if (authContext && authContext.user) {
       await addRecord({ variables: { addRecordInput: { ...record, userId: authContext.user['user_id'] } } });
-      refetch({ userId: authContext.user['user_id'] });
+      refetch({ getRecordsInput: { userId: authContext.user['user_id'], fromDate, toDate } });
     }
     onClose();
   };
@@ -80,29 +68,38 @@ export default function Balance() {
   const onDeleteRecord = async (recordId: string) => {
     if (authContext && authContext.user) {
       await deleteRecord({ variables: { recordId } });
-      refetch({ userId: authContext.user['user_id'] });
+      refetch({ getRecordsInput: { userId: authContext.user['user_id'], fromDate, toDate } });
     }
   };
 
+  const onSelectDateRange = (fromDate: string, toDate: string) => {
+    setFromDate(fromDate);
+    setToDate(toDate);
+  };
+
   return (
-    <Flex w="100%">
-      <Tabs w="100%" variant='enclosed'>
-        <TabList>
-          { 
-            years.map((year: number) => (<Tab key={year}>{year}</Tab>))
-          }
-        </TabList>
+    <VStack w="100%">
+      <HStack justifyContent="flex-start">
+        <Button colorScheme='teal' variant='ghost' onClick={() => onSelectDateRange(`${new Date().getUTCFullYear()-1}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`, `${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`)}>
+          Last Year
+        </Button>
+
+        <Input
+          placeholder="From"
+          size="md"
+          type="date"
+          onChange={(event) => setFromDate(event.target.value)}
+        />
+        <Input
+          placeholder="To"
+          size="md"
+          type="date"
+          onChange={(event) => setToDate(event.target.value)}
+        />
+      </HStack>
+      
         
-        <TabPanels>
-          { 
-            years.map((year: number) => (
-              <TabPanel key={year}>
-                <BalanceTable data={data.records} onDeleteRecord={onDeleteRecord} />
-              </TabPanel>
-            ))
-          }
-        </TabPanels>
-      </Tabs>
+      { data && <BalanceTable data={data.records} onDeleteRecord={onDeleteRecord} /> }
       <IconButton
         aria-label='New record'
         colorScheme='teal'
@@ -114,6 +111,6 @@ export default function Balance() {
         onClick={onOpen}
       />
       <BalanceModal isOpen={isOpen} onClose={onClose} onAddNewRecord={onAddNewRecord} />
-    </Flex>
+    </VStack>
   );
 }
