@@ -1,5 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Button, HStack, IconButton, Input, VStack, useDisclosure } from "@chakra-ui/react";
+import { Button, HStack, IconButton, VStack, useDisclosure } from "@chakra-ui/react";
 import BalanceTable from "../../components/BalanceTable/BalanceTable";
 import { useContext, useState } from "react";
 import { RecordInput } from "../../models/record";
@@ -7,6 +7,7 @@ import BalanceModal from "../../components/BalanceModal/BalanceModal";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
 import { AuthContext } from "../../context/authContext";
+import FilterModal from "../../components/FilterModal/FilterModal";
 
 const GET_RECORDS = gql`
   query Records($getRecordsInput: GetRecordsInput) {
@@ -47,6 +48,7 @@ const DELETE_RECORD = gql`
 
 export default function Balance() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isFilterOpen, onOpen: onFilterOpen, onClose: onFilterClose } = useDisclosure();
   const [ fromDate, setFromDate ] = useState(`${new Date().getUTCFullYear()-1}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
   const [ toDate, setToDate ] = useState(`${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
   const authContext = useContext(AuthContext);
@@ -73,29 +75,29 @@ export default function Balance() {
   };
 
   const onSelectDateRange = (fromDate: string, toDate: string) => {
-    setFromDate(fromDate);
-    setToDate(toDate);
+    if (authContext && authContext.user) {
+      setFromDate(fromDate);
+      setToDate(toDate);
+      refetch({ getRecordsInput: { userId: authContext.user['user_id'], fromDate, toDate } });
+    }
+  };
+
+  const onApplyFilter = (fromDate: string, toDate: string) => {
+    if (authContext && authContext.user) {
+      setFromDate(fromDate);
+      setToDate(toDate);
+      refetch({ getRecordsInput: { userId: authContext.user['user_id'], fromDate, toDate } });
+    }
   };
 
   return (
     <VStack w="100%">
-      <HStack justifyContent="flex-start">
+      <HStack w="100%" justifyContent="flex-start">
         <Button colorScheme='teal' variant='ghost' onClick={() => onSelectDateRange(`${new Date().getUTCFullYear()-1}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`, `${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`)}>
           Last Year
         </Button>
 
-        <Input
-          placeholder="From"
-          size="md"
-          type="date"
-          onChange={(event) => setFromDate(event.target.value)}
-        />
-        <Input
-          placeholder="To"
-          size="md"
-          type="date"
-          onChange={(event) => setToDate(event.target.value)}
-        />
+        <Button colorScheme='teal' onClick={onFilterOpen}>Custom Filter</Button>
       </HStack>
       
         
@@ -111,6 +113,7 @@ export default function Balance() {
         onClick={onOpen}
       />
       <BalanceModal isOpen={isOpen} onClose={onClose} onAddNewRecord={onAddNewRecord} />
+      <FilterModal isOpen={isFilterOpen} onClose={onFilterClose} onApplyFilter={onApplyFilter} />
     </VStack>
   );
 }
