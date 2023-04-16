@@ -4,47 +4,10 @@ import BalanceTable from "../../components/BalanceTable/BalanceTable";
 import { useContext, useState } from "react";
 import { RecordInput } from "../../models/record";
 import BalanceModal from "../../components/BalanceModal/BalanceModal";
-import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
 import { AuthContext } from "../../context/authContext";
 import FilterModal from "../../components/FilterModal/FilterModal";
-
-const GET_RECORDS = gql`
-  query Records($getRecordsInput: GetRecordsInput) {
-    records(getRecordsInput: $getRecordsInput) {
-      id
-      title
-      category
-      date
-      amount
-      type 
-    }
-  }
-`;
-
-const ADD_RECORD = gql`
-  mutation Mutation($addRecordInput: AddRecordInput) {
-    addRecord(addRecordInput: $addRecordInput) {
-      amount
-      category
-      date
-      title
-      type
-    }
-  }
-`;
-
-const DELETE_RECORD = gql`
-  mutation DeleteRecord($recordId: ID!) {
-    deleteRecord(recordId: $recordId) {
-      amount
-      category
-      date
-      title
-      type
-    }
-  }
-`;
+import { ADD_RECORD, DELETE_RECORD, GET_RECORDS } from "../../query/records";
 
 export default function Balance() {
   const { isOpen, onOpen, onClose } = useDisclosure();
