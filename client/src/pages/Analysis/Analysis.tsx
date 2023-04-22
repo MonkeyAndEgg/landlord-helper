@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { GET_RECORDS } from "../../query/records";
 import { TYPE } from "../../constants/record-type";
+import { Record } from "../../models/record";
 
 export default function Analysis() {
   const authContext = useContext(AuthContext);
@@ -31,8 +32,8 @@ export default function Analysis() {
   useEffect(() => {
     if (data) {
       const records = data.records;
-      const costs = records.filter((record: any) => record.type === TYPE.COST).map((record: any) => +record.amount);
-      const incomes = records.filter((record: any) => record.type === TYPE.INCOME).map((record: any) => +record.amount);
+      const costs = records.filter((record: Record) => record.type === TYPE.COST).map((record: Record) => +record.amount);
+      const incomes = records.filter((record: Record) => record.type === TYPE.INCOME).map((record: Record) => +record.amount);
       const totalIncome = incomes.reduce((acc: number, curr: number) => acc + curr, 0);
       const totalCost = costs.reduce((acc: number, curr: number) => acc + curr, 0);
       setSummary({ totalIncome, totalCost, netIncome: totalIncome - totalCost });
@@ -45,7 +46,6 @@ export default function Analysis() {
       setToDate(`${currentYearOption}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
     }
   }, [currentYearOption]);
-
   
   return (
     <VStack w="100%">
@@ -88,6 +88,9 @@ export default function Analysis() {
             </HStack>
           )
         }
+      </Flex>
+      <Flex w="100%" h="100px" p={10} borderWidth='1px' borderRadius='lg'>
+
       </Flex>
     </VStack>
   );
