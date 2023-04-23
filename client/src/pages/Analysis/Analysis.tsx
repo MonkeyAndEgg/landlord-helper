@@ -1,10 +1,17 @@
 import { useQuery } from "@apollo/client";
-import { Flex, Text, HStack, Heading, VStack, Select } from "@chakra-ui/react";
+import { Flex, Text, HStack, Heading, VStack, Select, Box } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { GET_RECORDS } from "../../query/records";
 import { TYPE } from "../../constants/record-type";
 import { Record } from "../../models/record";
+import AnalysisPieChart from "../../components/AnalysisPieChart/AnalysisPieChart";
+
+const dataMock = [
+  { title: 'One', value: 10, color: '#E38627' },
+  { title: 'Two', value: 15, color: '#C13C37' },
+  { title: 'Three', value: 20, color: '#6A2135' },
+];
 
 export default function Analysis() {
   const authContext = useContext(AuthContext);
@@ -48,7 +55,7 @@ export default function Analysis() {
   }, [currentYearOption]);
   
   return (
-    <VStack w="100%">
+    <VStack w="100%" spacing={7}>
       <Flex w="100%" justifyContent="start">
         <Select placeholder='Select year' w="200px" value={currentYearOption} onChange={(e) => setCurrentYear(+e.target.value)}>
           {
@@ -56,7 +63,7 @@ export default function Analysis() {
           }
         </Select>
       </Flex>
-      <Flex w="100%" h="100px" p={10} borderWidth='1px' borderRadius='lg' overflow='hidden' justifyContent="center">
+      <Flex w="100%" p={10} borderWidth='1px' borderRadius='lg' overflow='hidden' justifyContent="center">
         { error ? (
             <Flex fontWeight={900}>Failed on display summary</Flex>
           ) : (
@@ -89,8 +96,23 @@ export default function Analysis() {
           )
         }
       </Flex>
-      <Flex w="100%" h="100px" p={10} borderWidth='1px' borderRadius='lg'>
-
+      <Flex w="100%" h="100%" p={10} borderWidth='1px' borderRadius='lg'>
+        <HStack w="100%" justifyContent="space-evenly">
+          <VStack spacing={5}>
+            <Box fontWeight={900}>
+              Total Income
+            </Box>
+            <Box>
+              <AnalysisPieChart data={dataMock} />
+            </Box>
+          </VStack>
+          <VStack spacing={5}>
+            <Box fontWeight={900}>
+              Total Cost
+            </Box>
+            <AnalysisPieChart data={dataMock} />
+          </VStack>
+        </HStack>
       </Flex>
     </VStack>
   );
