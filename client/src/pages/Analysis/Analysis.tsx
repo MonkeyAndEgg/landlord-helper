@@ -38,12 +38,7 @@ export default function Analysis() {
 
   useEffect(() => {
     if (data) {
-      const records = data.records;
-      const costs = records.filter((record: Record) => record.type === TYPE.COST).map((record: Record) => +record.amount);
-      const incomes = records.filter((record: Record) => record.type === TYPE.INCOME).map((record: Record) => +record.amount);
-      const totalIncome = incomes.reduce((acc: number, curr: number) => acc + curr, 0);
-      const totalCost = costs.reduce((acc: number, curr: number) => acc + curr, 0);
-      setSummary({ totalIncome, totalCost, netIncome: totalIncome - totalCost });
+      initializeAnalysisData(data.records);
     }
   }, [data]);
 
@@ -53,6 +48,16 @@ export default function Analysis() {
       setToDate(`${currentYearOption}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
     }
   }, [currentYearOption]);
+
+  const initializeAnalysisData = (records: Record[]) => {
+    const costs = records.filter((record: Record) => record.type === TYPE.COST);
+    const incomes = records.filter((record: Record) => record.type === TYPE.INCOME);
+    const costsAmount = costs.map((record: Record) => +record.amount);
+    const incomeAmount = incomes.map((record: Record) => +record.amount);
+    const totalIncome = incomeAmount.reduce((acc: number, curr: number) => acc + curr, 0);
+    const totalCost = costsAmount.reduce((acc: number, curr: number) => acc + curr, 0);
+    setSummary({ totalIncome, totalCost, netIncome: totalIncome - totalCost });
+  };
   
   return (
     <VStack w="100%" spacing={7}>
