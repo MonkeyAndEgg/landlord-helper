@@ -2,6 +2,7 @@ import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButt
 import { useState } from "react";
 import { TYPE } from "../../constants/record-type";
 import { RecordInput } from "../../models/record";
+import { CATEGORY } from "../../constants/category";
 
 interface BalanceModalProps {
   isOpen: boolean;
@@ -28,8 +29,9 @@ export default function BalanceModal({ isOpen, onClose, onAddNewRecord }: Balanc
             <Input placeholder='Title' onChange={(event) => setTitle(event.target.value)} />
             <FormLabel>Category</FormLabel>
             <Select placeholder='Category' onChange={(event) => setCategory(event.target.value)}>
-              <option>Utility</option>
-              <option>Mortgage</option>
+              {
+                CATEGORY.map((item: { label: string, color: string }) => <option>{item.label}</option>)
+              }
             </Select>
             <FormLabel>Type</FormLabel>
             <Select placeholder='Type' onChange={(event) => setType(event.target.value as TYPE)}>
