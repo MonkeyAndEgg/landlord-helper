@@ -1,42 +1,45 @@
 export const CATEGORY = [
   {
-    label: 'Utility',
-    color: '#F0E68C'
+    label: 'Utility'
   },
   {
-    label: 'Mortgage Principal',
-    color: '#B22222'
+    label: 'Mortgage Principal'
   },
   {
-    label: 'Mortgage Interest',
-    color: '#FF4500'
+    label: 'Mortgage Interest'
   },
   {
-    label: 'Maintainence',
-    color: '#87CEFA'
+    label: 'Maintainence'
   },
   {
-    label: 'Network',
-    color: '#4B0082'
+    label: 'Network'
   },
   {
-    label: 'Property Tax',
-    color: '#FF69B4'
+    label: 'Property Tax'
   },
   {
-    label: 'Rent',
-    color: '#7CFC00'
+    label: 'Rent'
   },
   {
-    label: 'Ferry Tickets',
-    color: '#7FFFD4'
+    label: 'Ferry Tickets'
   },
   {
-    label: 'Insurance',
-    color: '#00BFFF'
+    label: 'Insurance'
   },
   {
-    label: 'Gardening',
-    color: '#ADFF2F'
+    label: 'Gardening'
   }
 ];
+
+export const categoryColorMapping = new Map([
+  ['Utility', '#F0E68C'],
+  ['Mortgage Principal', '#B22222'],
+  ['Mortgage Interest', '#FF4500'],
+  ['Maintainence', '#87CEFA'],
+  ['Network', '#4B0082'],
+  ['Property Tax', '#FF69B4'],
+  ['Rent', '#7CFC00'],
+  ['Ferry Tickets', '#7FFFD4'],
+  ['Insurance', '#00BFFF'],
+  ['Gardening', '#ADFF2F']
+]);
