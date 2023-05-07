@@ -30,13 +30,13 @@ export default function BalanceModal({ isOpen, onClose, onAddNewRecord }: Balanc
             <FormLabel>Category</FormLabel>
             <Select placeholder='Category' onChange={(event) => setCategory(event.target.value)}>
               {
-                CATEGORY.map((item: { label: string }) => <option>{item.label}</option>)
+                CATEGORY.map((item: { label: string }) => <option key={item.label}>{item.label}</option>)
               }
             </Select>
             <FormLabel>Type</FormLabel>
             <Select placeholder='Type' onChange={(event) => setType(event.target.value as TYPE)}>
-              <option>{TYPE.INCOME}</option>
-              <option>{TYPE.COST}</option>
+              <option key={TYPE.INCOME}>{TYPE.INCOME}</option>
+              <option key={TYPE.COST}>{TYPE.COST}</option>
             </Select>
             <FormLabel>Amount</FormLabel>
             <NumberInput min={0} onChange={(value) => setAmount(value)}>
