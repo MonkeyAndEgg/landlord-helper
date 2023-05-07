@@ -4,10 +4,11 @@ import { PieChart } from "react-minimal-pie-chart";
 const LINE_WIDTH_PIE_CHART = 60;
 
 interface AnalysisPieChartProps {
-  data: any
+  data: any;
+  totalValue: number;
 }
 
-export default function AnalysisPieChart({ data }: AnalysisPieChartProps) {
+export default function AnalysisPieChart({ data, totalValue }: AnalysisPieChartProps) {
   const [ selected, setSelected] = useState<number | undefined>(0);
   const [ hovered, setHovered ] = useState<number | undefined>(undefined);
 
@@ -31,7 +32,7 @@ export default function AnalysisPieChart({ data }: AnalysisPieChartProps) {
       data={displayData}
       radius={44}
       lineWidth={LINE_WIDTH_PIE_CHART}
-      totalValue={45}
+      totalValue={totalValue}
       label={({ dataEntry }) => Math.round(dataEntry.percentage) + '%'}
       animate
       segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
