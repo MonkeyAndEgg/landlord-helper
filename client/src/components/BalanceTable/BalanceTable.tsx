@@ -1,6 +1,7 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { IconButton, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { Record } from "../../models/record";
+import { TYPE } from "../../constants/record-type";
 
 interface BalanceTableProps {
   data: Record[];
@@ -11,7 +12,7 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
   const labels = ['Title', 'Category', 'Date', 'Amount', 'Action'];
 
   return (
-    <TableContainer w="100%">
+    <TableContainer w="100%" overflowY="auto">
       <Table variant='striped' colorScheme='teal'>
         <Thead>
           <Tr>
@@ -27,7 +28,7 @@ export default function BalanceTable({ data, onDeleteRecord }: BalanceTableProps
                 <Td>{item.title}</Td>
                 <Td>{item.category}</Td>
                 <Td>{item.date}</Td>
-                <Td>{item.amount}</Td>
+                <Td color={item.type === TYPE.INCOME ? 'green' : 'red'}>{item.amount}</Td>
                 <Td>
                   <IconButton
                     aria-label='delete record'
