@@ -12,8 +12,8 @@ import { ADD_RECORD, DELETE_RECORD, GET_RECORDS } from "../../query/records";
 export default function Balance() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isFilterOpen, onOpen: onFilterOpen, onClose: onFilterClose } = useDisclosure();
-  const [ fromDate, setFromDate ] = useState(`${new Date().getUTCFullYear()-1}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
-  const [ toDate, setToDate ] = useState(`${new Date().getUTCFullYear()}-${new Date().getUTCMonth()+1}-${new Date().getUTCDate()}`);
+  const [ fromDate, setFromDate ] = useState('');
+  const [ toDate, setToDate ] = useState('');
   const authContext = useContext(AuthContext);
   const { loading, error, data, refetch } = useQuery(GET_RECORDS, {
     variables: { getRecordsInput: { userId: authContext && authContext.user ? authContext.user['user_id'] : '', fromDate, toDate } },

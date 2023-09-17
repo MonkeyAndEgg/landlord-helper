@@ -4,19 +4,27 @@ import { GraphQLError } from "graphql";
 export const recordReslovers = {
   Query: {
     records: async (_, { getRecordsInput: { userId, fromDate, toDate } }) => {
-      let queryDateOptions = {};
-      if (fromDate) {
+      let queryDateOptions;
+      let findParams: any = { userId };
+      if (fromDate && fromDate.length > 0) {
         queryDateOptions = {
           $gte: fromDate
         };
       }
-      if (toDate) {
+      if (toDate && toDate.length > 0) {
         queryDateOptions = {
           ...queryDateOptions,
           $lte: toDate
         };
       }
-      return await Record.find({ userId, date: queryDateOptions}).sort('date');
+      if (queryDateOptions) {
+        findParams = {
+          ...findParams,
+          date: queryDateOptions
+        }
+      }
+    
+      return await Record.find(findParams).sort('date');
     }
   },
   Mutation: {
